@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tic Tac Toe</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js" defer></script>
+</head>
+<body>
+    <dialog id="intro">
+        <form>
+            <label for="player-name">Insert your name</label>
+            <input type="text" id="player-name">
+            <button type="button" id="choose-name">Submit</button>
+        </form>
+    </dialog>
+    <dialog id="results-container">
+        <div class="end-container">
+            <p id="results"></p>
+            <div class="button-container">
+                <button type="button" id="close">Close</button>
+                <button type="button" id="restart">Restart</button>
+            </div>
+        </div>
+    </dialog>
+    <div class="container">
+        <header>
+            <p>Tic Tac Toe</p>
+        </header>
+        <main>
+            <div class="symbols">
+                <button type="button" id="cross">x</button>
+                <button type="button" id="circle">o</button>
+            </div>
+            <div class="cells">
+                <button class="cell bottom right" type="button" id="cell0"></button>
+                <button class="cell bottom right" type="button" id="cell1"></button>
+                <button class="cell bottom" type="button" id="cell2"></button>
+                <button class="cell bottom right" type="button" id="cell3"></button>
+                <button class="cell bottom right" type="button" id="cell4"></button>
+                <button class="cell bottom" type="button" id="cell5"></button>
+                <button class="cell right" type="button" id="cell6"></button>
+                <button class="cell right" type="button" id="cell7"></button>
+                <button class="cell" type="button" id="cell8"></button>
+            </div>
+            <button type="button" id="restart">Restart</button>
+        </main>
+        <footer>Copyright © 2024 jackiewaang</footer>
+    </div>
+</body>
+</html>
