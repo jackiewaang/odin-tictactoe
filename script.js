@@ -51,18 +51,20 @@ function checkDraw(board){
     return true;
 }
 
-function place(game, row, col){
+function place(game, row, col, player){
     if(game.board[row][col] === ''){
-        game.board[row][col] = game.turn.symbol;
+        game.board[row][col] = player.symbol;
     }
 }
+
+const cells = document.querySelectorAll('.cell');
+
 
 function startGame(playerName){
     const player1 = new player(playerName, 'x');
     const player2 = new player('Bot', 'o');
     const gameplay = new game(player1);
 
-    const cells = document.querySelectorAll('.cell');
 
     cells.forEach(cell => {
         cell.addEventListener('click', function handleClick(event){
@@ -72,7 +74,7 @@ function startGame(playerName){
                 const row = Math.floor(cellId[4] / 3);
                 const col = cellId[4] % 3;
 
-                place(gameplay, row, col);
+                place(gameplay, row, col, player1);
 
                 event.target.textContent = gameplay.turn.symbol;
                 
@@ -81,7 +83,16 @@ function startGame(playerName){
                 } else if(checkDraw(gameplay.board)){
                     endGame('Draw');
                 } else{
-                    gameplay.turn = gameplay.turn === player1 ? player2 : player1;
+                    while(true){
+                        const random = Math.floor(Math.random() * cells.length);
+                        if(cells[random].textContent === ''){
+                            const rowBot = Math.floor(cells[random].id[4] / 3);
+                            const colBot = cells[random].id[4] % 3;
+                            cells[random].textContent = player2.symbol;
+                            place(gameplay, rowBot,colBot, player2);
+                            break;
+                        }
+                    }
                 }
             }
              
@@ -92,7 +103,11 @@ function startGame(playerName){
     restartButtons.forEach( restartButton => {
         restartButton.addEventListener('click', function(){
             gameplay.restart();
-            cells.forEach(cell => {cell.textContent = '';})
+            close.click();
+            cells.forEach(cell => {
+                cell.textContent = '';
+                cell.disabled = false;
+            })
         })
     }
     )
@@ -106,28 +121,27 @@ function startGame(playerName){
             sym.classList.add('chosen');
             player1.symbol =  sym.textContent;
             player2.symbol = (player1.symbol === 'x') ? 'o' : 'x';
-            console.log(player1.symbol);
-            console.log(player2.symbol);
             gameplay.turn.symbol;
+            restartButtons[0].click();
         })
     })
 
-
 }
+
 
 intro.showModal();
 const introButton = document.querySelector('#choose-name');
-introButton.addEventListener('click', function(){
-    form.submit();
-});
+introButton.addEventListener('click', closeIntro);
 
 const form = document.querySelector('form');
-form.addEventListener('submit', function(event){
+form.addEventListener('submit', closeIntro)
+
+function closeIntro(event){
     event.preventDefault();
     intro.close();
     const playerName = document.querySelector('#player-name').value;
     startGame(playerName);
-})
+}
 
 function endGame(winner){
     if(winner === 'Draw'){
@@ -135,6 +149,7 @@ function endGame(winner){
     } else{
         results.textContent = `${winner} has won!`;    
     }
+    cells.forEach(cell => cell.disabled = true);
     resultsContainer.showModal();
 }
 
@@ -143,8 +158,3 @@ close.addEventListener('click', function(){
     resultsContainer.close();
 })
 
-
-/**TODO:
- * add cpu
- * handle restart button in end dialog which does not close the dialog
- */
