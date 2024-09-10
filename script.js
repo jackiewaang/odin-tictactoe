@@ -59,7 +59,7 @@ function place(game, row, col){
 
 function startGame(playerName){
     const player1 = new player(playerName, 'x');
-    const player2 = new player('cpu', 'o');
+    const player2 = new player('Bot', 'o');
     const gameplay = new game(player1);
 
     const cells = document.querySelectorAll('.cell');
@@ -67,21 +67,24 @@ function startGame(playerName){
     cells.forEach(cell => {
         cell.addEventListener('click', function handleClick(event){
 
-            const cellId = event.target.id;
-            const row = Math.floor(cellId[4] / 3);
-            const col = cellId[4] % 3;
+            if(cell.textContent === ''){
+                const cellId = event.target.id;
+                const row = Math.floor(cellId[4] / 3);
+                const col = cellId[4] % 3;
 
-            place(gameplay, row, col);
+                place(gameplay, row, col);
 
-            event.target.textContent = gameplay.turn.symbol;
-
-            if(checkWinner(gameplay.board) !== null){
-                endGame(gameplay.turn.name);
-            } else if(checkDraw(gameplay.board)){
-                endGame('Draw');
-            } else{
-                gameplay.turn = gameplay.turn === player1 ? player2 : player1;
+                event.target.textContent = gameplay.turn.symbol;
+                
+                if(checkWinner(gameplay.board) !== null){
+                    endGame(gameplay.turn.name);
+                } else if(checkDraw(gameplay.board)){
+                    endGame('Draw');
+                } else{
+                    gameplay.turn = gameplay.turn === player1 ? player2 : player1;
+                }
             }
+             
         })
     })
 
@@ -92,16 +95,39 @@ function startGame(playerName){
             cells.forEach(cell => {cell.textContent = '';})
         })
     }
-)
+    )
+    
+    const symbols = document.querySelectorAll('#symbol');
+    symbols.forEach(sym => {
+        sym.addEventListener('click', function(){
+            symbols.forEach(symb => {
+                symb.classList.remove('chosen');
+            })
+            sym.classList.add('chosen');
+            player1.symbol =  sym.textContent;
+            player2.symbol = (player1.symbol === 'x') ? 'o' : 'x';
+            console.log(player1.symbol);
+            console.log(player2.symbol);
+            gameplay.turn.symbol;
+        })
+    })
+
+
 }
 
 intro.showModal();
 const introButton = document.querySelector('#choose-name');
 introButton.addEventListener('click', function(){
+    form.submit();
+});
+
+const form = document.querySelector('form');
+form.addEventListener('submit', function(event){
+    event.preventDefault();
     intro.close();
     const playerName = document.querySelector('#player-name').value;
     startGame(playerName);
-});
+})
 
 function endGame(winner){
     if(winner === 'Draw'){
@@ -117,9 +143,8 @@ close.addEventListener('click', function(){
     resultsContainer.close();
 })
 
+
 /**TODO:
- * handle player choose of symbol
- * improve intro
  * add cpu
  * handle restart button in end dialog which does not close the dialog
  */

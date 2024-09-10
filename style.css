@@ -16,6 +16,34 @@ body{
     font-family:Roboto;
 }
 
+form{
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    width:400px;
+    height:200px;
+}
+
+form label{
+    font-size:1.5rem;
+}
+
+form #player-name{
+    border-radius:10px;
+    width:200px;
+    height:20px;
+    font-size:1.2rem;
+    text-align:center;
+}
+
+form #choose-name{
+    border:none;
+    border-radius:4px;
+    font-size:1.5rem;
+    padding:10px 15px;
+}
+
 dialog{
     border:none;
         border-radius:8px;
@@ -77,9 +105,13 @@ main{
     border:none;
     width:100px;
     height:80px;
-    font-size:1.5rem;
+    font-size:2rem;
     font-weight:600;
     cursor:pointer;
+}
+
+#symbol.chosen{
+    background-color:#d4d4d8;
 }
 
 .symbols button:hover{
